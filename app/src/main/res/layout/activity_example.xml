@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.patryk1007.example.Example2Activity">
+
+    <com.patryk1007.fillme.FillMe
+        android:id="@+id/fill_me_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:background="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/fill_horizontal_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp" />
+
+    <SeekBar
+        android:id="@+id/fill_horizontal_percent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp" />
+
+    <TextView
+        android:id="@+id/fill_vertical_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp" />
+
+    <SeekBar
+        android:id="@+id/fill_vertical_percent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <View
+            android:id="@+id/colour_green"
+            android:background="@android:color/holo_green_light"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1" />
+
+        <View
+            android:id="@+id/colour_red"
+            android:background="@android:color/holo_red_light"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1" />
+
+        <View
+            android:id="@+id/colour_blue"
+            android:background="@android:color/holo_blue_light"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</LinearLayout>

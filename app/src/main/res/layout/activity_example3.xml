@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.patryk1007.example.Example2Activity">
+
+    <com.patryk1007.fillme.FillMe
+        android:id="@+id/fill_me_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:background="@android:color/darker_gray"
+        app:fmConvexFigure="true"
+        app:fmFillByTouch="both"
+        app:fmFillColour="@android:color/holo_red_light"
+        app:fmFillHorizontalPercent="1"
+        app:fmFillVerticalPercent="0.75"
+        app:fmImage="@drawable/heart" />
+
+    <com.patryk1007.fillme.FillMe
+        android:id="@+id/fill_me_view2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:background="@android:color/darker_gray"
+        app:fmConvexFigure="false"
+        app:fmFillByTouch="both"
+        app:fmFillColour="@android:color/holo_red_light"
+        app:fmFillHorizontalPercent="1"
+        app:fmFillVerticalPercent="0.75"
+        app:fmImage="@drawable/icone3" />
+
+</LinearLayout>

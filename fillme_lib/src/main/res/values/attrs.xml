@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FillMe">
+        <attr name="fmImage" format="integer"/>
+        <attr name="fmAlphaLevel" format="integer" />
+        <attr name="fmFillHorizontalPercent" format="float" type="dimen" />
+        <attr name="fmFillVerticalPercent" format="float" type="dimen" />
+        <attr name="fmFillByTouch">
+            <enum name="none" value="0" />
+            <enum name="horizontal" value="1" />
+            <enum name="vertical" value="2" />
+            <enum name="both" value="3" />
+        </attr>
+        <attr name="fmConvexFigure" format="boolean" />
+        <attr name="fmFillColour" format="color" type="integer" />
+    </declare-styleable>
+</resources>

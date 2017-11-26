@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FillMe</string>
+    <string name="convex_figure">Convex Figure</string>
+    <string name="fill_vertical_by_touch">Fill Vertical by touch</string>
+    <string name="fill_horizontal_by_touch">Fill Horizontal by touch</string>
+    <string name="fill_vertical_info">Vertical: %1$s%%, %2$spx</string>
+    <string name="fill_horizontal_info">Horizontal: %1$s%%, %2$spx</string>
+
+    <string name="menu_example1">Example 1</string>
+    <string name="menu_example2">Example 2</string>
+    <string name="menu_example3">Example 3</string>
+</resources>

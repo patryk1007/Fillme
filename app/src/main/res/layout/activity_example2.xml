@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.patryk1007.example.Example2Activity">
+
+    <com.patryk1007.fillme.FillMe
+        android:id="@+id/fill_me_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:fmFillHorizontalPercent = "1"
+        app:fmFillVerticalPercent = "1"
+        android:layout_gravity="center"
+        android:background="@color/colorAccent" />
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/convex_figure_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:checked="true"
+        android:text="@string/convex_figure" />
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/fill_vertical_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:checked="true"
+        android:text="@string/fill_vertical_by_touch" />
+
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/fill_horizontal_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:checked="true"
+        android:text="@string/fill_horizontal_by_touch" />
+</LinearLayout>
