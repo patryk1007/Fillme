@@ -9,8 +9,8 @@
 
     <com.patryk1007.fillme.FillMe
         android:id="@+id/fill_me_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:fmFillHorizontalPercent = "1"
         app:fmFillVerticalPercent = "1"
         android:layout_gravity="center"

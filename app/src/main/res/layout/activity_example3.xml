@@ -13,11 +13,11 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:background="@android:color/darker_gray"
-        app:fmConvexFigure="true"
+        app:fmConvexFigure="false"
         app:fmFillByTouch="both"
         app:fmFillColour="@android:color/holo_red_light"
         app:fmFillHorizontalPercent="1"
-        app:fmFillVerticalPercent="0.75"
+        app:fmFillVerticalPercent="0.95"
         app:fmImage="@drawable/heart" />
 
     <com.patryk1007.fillme.FillMe
@@ -26,11 +26,11 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:background="@android:color/darker_gray"
-        app:fmConvexFigure="false"
+        app:fmConvexFigure="true"
         app:fmFillByTouch="both"
-        app:fmFillColour="@android:color/holo_red_light"
+        app:fmFillColour="#ffff00"
         app:fmFillHorizontalPercent="1"
         app:fmFillVerticalPercent="0.75"
-        app:fmImage="@drawable/icone3" />
+        app:fmImage="@drawable/drop" />
 
 </LinearLayout>

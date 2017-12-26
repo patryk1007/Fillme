@@ -24,7 +24,7 @@ public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, Arra
     public void startCalculation(Bitmap image, int alphaLevel, OnFillLineCalculationListener listener) {
         asyncListener = listener;
         this.alphaLevel = alphaLevel;
-        if(image!=null) {
+        if (image != null) {
             this.execute(image);
         }
     }
@@ -47,38 +47,49 @@ public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, Arra
         int currentPixIndex;
         int pointsSize = pixels.length;
         int newPixIndex;
+
+        long startCalculation = Calendar.getInstance().getTimeInMillis();
+
         while (!pointQueue.isEmpty()) {
             currentPixIndex = pointQueue.poll();
 
             newPixIndex = currentPixIndex + 1;
-            if (newPixIndex < pointsSize && !filledPoints[newPixIndex]) {
-                filledPoints[newPixIndex] = TYPE_LINE;
-                if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex < width) {
-                    pointQueue.add(newPixIndex);
+            if (newPixIndex < pointsSize) {
+                if (!filledPoints[newPixIndex]) {
+                    filledPoints[newPixIndex] = TYPE_LINE;
+                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex < width) {
+                        pointQueue.add(newPixIndex);
+                    }
+                }
+
+                newPixIndex = currentPixIndex + width;
+                if (newPixIndex < pointsSize) {
+                    if (!filledPoints[newPixIndex]) {
+                        filledPoints[newPixIndex] = TYPE_LINE;
+                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex % width == 0) {
+                            pointQueue.add(newPixIndex);
+                        }
+                    }
                 }
             }
 
             newPixIndex = currentPixIndex - 1;
-            if (newPixIndex > 0 && !filledPoints[newPixIndex]) {
-                filledPoints[newPixIndex] = TYPE_LINE;
-                if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
-                    pointQueue.add(newPixIndex);
+            if (newPixIndex > 0) {
+                if (!filledPoints[newPixIndex]) {
+                    filledPoints[newPixIndex] = TYPE_LINE;
+                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
+                        pointQueue.add(newPixIndex);
+                    }
                 }
-            }
 
-            newPixIndex = currentPixIndex + width;
-            if (newPixIndex < pointsSize && !filledPoints[newPixIndex]) {
-                filledPoints[newPixIndex] = TYPE_LINE;
-                if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex % width == 0) {
-                    pointQueue.add(newPixIndex);
-                }
-            }
-
-            newPixIndex = currentPixIndex - width;
-            if (newPixIndex > 0 && !filledPoints[newPixIndex]) {
-                filledPoints[newPixIndex] = TYPE_LINE;
-                if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
-                    pointQueue.add(newPixIndex);
+                newPixIndex = currentPixIndex - width;
+                if (newPixIndex > 0) {
+                    if (!filledPoints[newPixIndex]) {
+                        filledPoints[newPixIndex] = TYPE_LINE;
+                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
+                            pointQueue.add(newPixIndex);
+                        }
+                    }
                 }
             }
 
@@ -109,7 +120,7 @@ public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, Arra
             }
         }
         Log.d("ASYNCCALCULATION", " Total: " + (Calendar.getInstance().getTimeInMillis() - startTime)
-                + " Calculation: " + (endCalculation - startTime)
+                + " Calculation: " + (endCalculation - startCalculation)
                 + " Points: " + (Calendar.getInstance().getTimeInMillis() - endCalculation)
                 + " " + points.size());
         return points;

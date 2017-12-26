@@ -70,7 +70,8 @@ public class FillMe extends View {
         setImageDrawable(typedArray.getDrawable(R.styleable.FillMe_fmImage));
         setConvexFigure(typedArray.getBoolean(R.styleable.FillMe_fmConvexFigure, true));
         alphaLevel = (typedArray.getInt(R.styleable.FillMe_fmAlphaLevel, DEFAULT_ALPHA_LEVEL));
-        paint.setColor(typedArray.getInt(R.styleable.FillMe_fmFillColour, fillColour));
+        this.fillColour = typedArray.getInt(R.styleable.FillMe_fmFillColour, fillColour);
+        paint.setColor(fillColour);
         float percentFillHorizontal = typedArray.getFloat(R.styleable.FillMe_fmFillHorizontalPercent, -1);
         float percentFillVertical = typedArray.getFloat(R.styleable.FillMe_fmFillVerticalPercent, -1);
         setFillPercentHorizontalAndVertical(percentFillHorizontal, percentFillVertical);
@@ -236,16 +237,22 @@ public class FillMe extends View {
                 height = image.getHeight();
             }
 
-            if (image.getWidth() != width || image.getHeight() != height) {
-                image = Bitmap.createScaledBitmap(image, width, height, false);
-                linesCalculation.startCalculation(image, alphaLevel, onFillLineCalculationListener);
-            }
+            updateDrawable();
         } else {
             width = widthSize;
             height = heightSize;
         }
 
         setMeasuredDimension(width, height);
+    }
+
+    private void updateDrawable() {
+        if (image != null) {
+            if (image.getWidth() != width || image.getHeight() != height) {
+                image = Bitmap.createScaledBitmap(image, width, height, false);
+                linesCalculation.startCalculation(image, alphaLevel, onFillLineCalculationListener);
+            }
+        }
     }
 
     @Override
