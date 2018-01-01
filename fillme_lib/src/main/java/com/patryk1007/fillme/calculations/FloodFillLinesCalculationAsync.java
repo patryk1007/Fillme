@@ -1,7 +1,6 @@
 package com.patryk1007.fillme.calculations;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,6 +15,8 @@ import java.util.Queue;
 public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, ArrayList<FillLine>> implements LinesCalculation {
 
     private final static boolean TYPE_LINE = true;
+
+    private native boolean[] invokeNativeFunction(int[] points, int width, int height);
 
     private OnFillLineCalculationListener asyncListener;
     private int alphaLevel;
@@ -37,63 +38,65 @@ public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, Arra
         int width = image.getWidth();
         int height = image.getHeight();
 
-        int[] pixels = new int[width * height];
-        boolean[] filledPoints = new boolean[width * height];
+        int pointsSize = width * height;
+        int[] pixels = new int[pointsSize];
         image.getPixels(pixels, 0, width, 0, 0, width, height);
 
         Queue<Integer> pointQueue = new ArrayDeque<>();
         pointQueue.add(0);
 
-        int currentPixIndex;
-        int pointsSize = pixels.length;
-        int newPixIndex;
 
         long startCalculation = Calendar.getInstance().getTimeInMillis();
 
-        while (!pointQueue.isEmpty()) {
-            currentPixIndex = pointQueue.poll();
-
-            newPixIndex = currentPixIndex + 1;
-            if (newPixIndex < pointsSize) {
-                if (!filledPoints[newPixIndex]) {
-                    filledPoints[newPixIndex] = TYPE_LINE;
-                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex < width) {
-                        pointQueue.add(newPixIndex);
-                    }
-                }
-
-                newPixIndex = currentPixIndex + width;
-                if (newPixIndex < pointsSize) {
-                    if (!filledPoints[newPixIndex]) {
-                        filledPoints[newPixIndex] = TYPE_LINE;
-                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex % width == 0) {
-                            pointQueue.add(newPixIndex);
-                        }
-                    }
-                }
-            }
-
-            newPixIndex = currentPixIndex - 1;
-            if (newPixIndex > 0) {
-                if (!filledPoints[newPixIndex]) {
-                    filledPoints[newPixIndex] = TYPE_LINE;
-                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
-                        pointQueue.add(newPixIndex);
-                    }
-                }
-
-                newPixIndex = currentPixIndex - width;
-                if (newPixIndex > 0) {
-                    if (!filledPoints[newPixIndex]) {
-                        filledPoints[newPixIndex] = TYPE_LINE;
-                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
-                            pointQueue.add(newPixIndex);
-                        }
-                    }
-                }
-            }
-
-        }
+        System.loadLibrary("native-lib");
+        boolean[] filledPoints = invokeNativeFunction(pixels, width, height);
+//        boolean[] filledPoints = new boolean[pointsSize];
+//        int currentPixIndex;
+//        int newPixIndex;
+//        while (!pointQueue.isEmpty()) {
+//            currentPixIndex = pointQueue.poll();
+//
+//            newPixIndex = currentPixIndex + 1;
+//            if (newPixIndex < pointsSize) {
+//                if (!filledPoints[newPixIndex]) {
+//                    filledPoints[newPixIndex] = TYPE_LINE;
+//                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex < width) {
+//                        pointQueue.add(newPixIndex);
+//                    }
+//                }
+//
+//                newPixIndex = currentPixIndex + width;
+//                if (newPixIndex < pointsSize) {
+//                    if (!filledPoints[newPixIndex]) {
+//                        filledPoints[newPixIndex] = TYPE_LINE;
+//                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex % width == 0) {
+//                            pointQueue.add(newPixIndex);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            newPixIndex = currentPixIndex - 1;
+//            if (newPixIndex > 0) {
+//                if (!filledPoints[newPixIndex]) {
+//                    filledPoints[newPixIndex] = TYPE_LINE;
+//                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
+//                        pointQueue.add(newPixIndex);
+//                    }
+//                }
+//
+//                newPixIndex = currentPixIndex - width;
+//                if (newPixIndex > 0) {
+//                    if (!filledPoints[newPixIndex]) {
+//                        filledPoints[newPixIndex] = TYPE_LINE;
+//                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
+//                            pointQueue.add(newPixIndex);
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
 
         long endCalculation = Calendar.getInstance().getTimeInMillis();
 
