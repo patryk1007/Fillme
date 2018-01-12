@@ -1,23 +1,21 @@
 #include <jni.h>
-#include <queue>
-
 
 extern "C" {
 JNIEXPORT jbooleanArray JNICALL
 Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNativeFunction(
         JNIEnv *env, jobject instance,
-        jintArray inJNIArray, jint width, jint height) {
+        jintArray inJNIArray, jint width, jint height, jint alphaLevel) {
 
     jint *pixels = env->GetIntArrayElements(inJNIArray, false);
-    jsize pointsSize = env->GetArrayLength(inJNIArray);
+    jsize pointsSize = width * height;
     jbooleanArray filledPointsObject = env->NewBooleanArray(pointsSize);
     jboolean *filledPoints = env->GetBooleanArrayElements(filledPointsObject, false);
 
     int currentItem = 0, lastFilledField = 0;
+    int newPixIndex;
     int *checkPointsArray = new int[pointsSize];
 
     checkPointsArray[lastFilledField] = 0;
-    int newPixIndex;
     jint currentPixIndex;
 
     do {
@@ -28,8 +26,8 @@ Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNat
         if (newPixIndex < pointsSize) {
             if (!filledPoints[newPixIndex]) {
                 filledPoints[newPixIndex] = 1;
-                if (/*pixels[newPixIndex] >> 24 <= alphaLevel*/
-                        pixels[newPixIndex] == 0 || currentPixIndex < width) {
+                if ((pixels[newPixIndex] >> 24 & 0xff) <= alphaLevel ||
+                    currentPixIndex < width) {
                     lastFilledField++;
                     checkPointsArray[lastFilledField] = newPixIndex;
                 }
@@ -39,8 +37,8 @@ Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNat
             if (newPixIndex < pointsSize) {
                 if (!filledPoints[newPixIndex]) {
                     filledPoints[newPixIndex] = 1;
-                    if (/*pixels[newPixIndex] >> 24 <= alphaLevel*/
-                            pixels[newPixIndex] == 0 || currentPixIndex % width == 0) {
+                    if ((pixels[newPixIndex] >> 24 & 0xff) <= alphaLevel ||
+                        currentPixIndex % width == 0) {
                         lastFilledField++;
                         checkPointsArray[lastFilledField] = newPixIndex;
                     }
@@ -52,7 +50,7 @@ Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNat
         if (newPixIndex > 0) {
             if (!filledPoints[newPixIndex]) {
                 filledPoints[newPixIndex] = 1;
-                if (/*pixels[newPixIndex] >> 24 <= alphaLevel*/ pixels[newPixIndex] == 0) {
+                if ((pixels[newPixIndex] >> 24 & 0xff) <= alphaLevel) {
                     lastFilledField++;
                     checkPointsArray[lastFilledField] = newPixIndex;
                 }
@@ -62,7 +60,7 @@ Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNat
             if (newPixIndex > 0) {
                 if (!filledPoints[newPixIndex]) {
                     filledPoints[newPixIndex] = 1;
-                    if (/*pixels[newPixIndex] >> 24 <= alphaLevel*/ pixels[newPixIndex] == 0) {
+                    if ((pixels[newPixIndex] >> 24 & 0xff) <= alphaLevel) {
                         lastFilledField++;
                         checkPointsArray[lastFilledField] = newPixIndex;
                     }
@@ -70,7 +68,7 @@ Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNat
             }
         }
     } while (lastFilledField >= currentItem);
-
+    delete[] checkPointsArray;
     return filledPointsObject;
 }
 }

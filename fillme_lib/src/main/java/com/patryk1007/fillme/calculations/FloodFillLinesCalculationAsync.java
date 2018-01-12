@@ -16,7 +16,7 @@ public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, Arra
 
     private final static boolean TYPE_LINE = true;
 
-    private native boolean[] invokeNativeFunction(int[] points, int width, int height);
+    private native boolean[] invokeNativeFunction(int[] points, int width, int height, int alphaLevel);
 
     private OnFillLineCalculationListener asyncListener;
     private int alphaLevel;
@@ -49,54 +49,7 @@ public class FloodFillLinesCalculationAsync extends AsyncTask<Bitmap, Void, Arra
         long startCalculation = Calendar.getInstance().getTimeInMillis();
 
         System.loadLibrary("native-lib");
-        boolean[] filledPoints = invokeNativeFunction(pixels, width, height);
-//        boolean[] filledPoints = new boolean[pointsSize];
-//        int currentPixIndex;
-//        int newPixIndex;
-//        while (!pointQueue.isEmpty()) {
-//            currentPixIndex = pointQueue.poll();
-//
-//            newPixIndex = currentPixIndex + 1;
-//            if (newPixIndex < pointsSize) {
-//                if (!filledPoints[newPixIndex]) {
-//                    filledPoints[newPixIndex] = TYPE_LINE;
-//                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex < width) {
-//                        pointQueue.add(newPixIndex);
-//                    }
-//                }
-//
-//                newPixIndex = currentPixIndex + width;
-//                if (newPixIndex < pointsSize) {
-//                    if (!filledPoints[newPixIndex]) {
-//                        filledPoints[newPixIndex] = TYPE_LINE;
-//                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel || currentPixIndex % width == 0) {
-//                            pointQueue.add(newPixIndex);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            newPixIndex = currentPixIndex - 1;
-//            if (newPixIndex > 0) {
-//                if (!filledPoints[newPixIndex]) {
-//                    filledPoints[newPixIndex] = TYPE_LINE;
-//                    if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
-//                        pointQueue.add(newPixIndex);
-//                    }
-//                }
-//
-//                newPixIndex = currentPixIndex - width;
-//                if (newPixIndex > 0) {
-//                    if (!filledPoints[newPixIndex]) {
-//                        filledPoints[newPixIndex] = TYPE_LINE;
-//                        if (Color.alpha(pixels[newPixIndex]) <= alphaLevel) {
-//                            pointQueue.add(newPixIndex);
-//                        }
-//                    }
-//                }
-//            }
-//
-//        }
+        boolean[] filledPoints = invokeNativeFunction(pixels, width, height, alphaLevel);
 
         long endCalculation = Calendar.getInstance().getTimeInMillis();
 

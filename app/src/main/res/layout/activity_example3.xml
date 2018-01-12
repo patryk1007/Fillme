@@ -18,6 +18,7 @@
         app:fmFillColour="@android:color/holo_red_light"
         app:fmFillHorizontalPercent="1"
         app:fmFillVerticalPercent="0.95"
+        app:fmAlphaLevel="125"
         app:fmImage="@drawable/heart" />
 
     <com.patryk1007.fillme.FillMe
