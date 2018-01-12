@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.patryk1007.fillme.calculations.ConvexLinesCalculation;
 import com.patryk1007.fillme.calculations.FloodFillLinesCalculationAsync;
+import com.patryk1007.fillme.calculations.FloodFillLinesCalculationSync;
 import com.patryk1007.fillme.calculations.LinesCalculation;
 import com.patryk1007.fillme.enums.FillMode;
 import com.patryk1007.fillme.listeners.OnFillChangeListener;
@@ -37,6 +38,7 @@ public class FillMe extends View {
     private float fillPercentHorizontal;
     private FillMode fillMode;
     private boolean convexFigure;
+    private boolean syncCalculation;
     private int fillColour = Color.GREEN;
 
     private int width;
@@ -47,20 +49,23 @@ public class FillMe extends View {
 
     public FillMe(Context context) {
         super(context);
-        linesCalculation = initAsyncCounter();
+        linesCalculation = initCalculationManager();
         paint.setColor(fillColour);
     }
 
     public FillMe(Context context, AttributeSet attrs) {
         super(context, attrs);
         getAttr(attrs);
-        linesCalculation = initAsyncCounter();
+        linesCalculation = initCalculationManager();
         paint.setColor(fillColour);
     }
 
-    private LinesCalculation initAsyncCounter() {
+    private LinesCalculation initCalculationManager() {
         if (isConvexFigure()) {
             return new ConvexLinesCalculation();
+        }
+        if (syncCalculation) {
+            return new FloodFillLinesCalculationSync();
         }
         return new FloodFillLinesCalculationAsync();
     }
@@ -112,13 +117,21 @@ public class FillMe extends View {
     }
 
     public void setConvexFigure(boolean convexFigure) {
-        if (this.convexFigure != convexFigure) {
+        if (this.convexFigure != convexFigure && image != null) {
             this.convexFigure = convexFigure;
             fillLines = new ArrayList<>();
-            linesCalculation = initAsyncCounter();
+            linesCalculation = initCalculationManager();
             linesCalculation.startCalculation(image, alphaLevel, onFillLineCalculationListener);
             this.postInvalidate();
         }
+    }
+
+    public boolean isSyncCalculation() {
+        return syncCalculation;
+    }
+
+    public void setSyncCalculation(boolean syncCalculation) {
+        this.syncCalculation = syncCalculation;
     }
 
     public int getFillPixelVertical() {

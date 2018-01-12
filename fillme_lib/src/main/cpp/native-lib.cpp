@@ -2,7 +2,7 @@
 
 extern "C" {
 JNIEXPORT jbooleanArray JNICALL
-Java_com_patryk1007_fillme_calculations_FloodFillLinesCalculationAsync_invokeNativeFunction(
+Java_com_patryk1007_fillme_calculations_AllShapesLinesCalculations_invokeNativeFunction(
         JNIEnv *env, jobject instance,
         jintArray inJNIArray, jint width, jint height, jint alphaLevel) {
 
