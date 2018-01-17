@@ -12,6 +12,7 @@
             <enum name="both" value="3" />
         </attr>
         <attr name="fmConvexFigure" format="boolean" />
+        <attr name="fmAsyncCalculation" format="boolean" />
         <attr name="fmFillColour" format="color" type="integer" />
     </declare-styleable>
 </resources>

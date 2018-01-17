@@ -29,7 +29,7 @@
         android:background="@android:color/darker_gray"
         app:fmConvexFigure="true"
         app:fmFillByTouch="both"
-        app:fmFillColour="#ffff00"
+        app:fmFillColour="#72A9DD"
         app:fmFillHorizontalPercent="1"
         app:fmFillVerticalPercent="0.75"
         app:fmImage="@drawable/drop" />

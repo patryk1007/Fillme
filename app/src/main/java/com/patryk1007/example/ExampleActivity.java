@@ -1,6 +1,5 @@
 package com.patryk1007.example;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -31,6 +30,7 @@ public class ExampleActivity extends AppCompatActivity {
 
         fillMeView = (FillMe) findViewById(R.id.fill_me_view);
         fillMeView.setImageDrawableId(R.drawable.icone);
+        fillMeView.setFillPercentHorizontalAndVertical(0, 0);
 
         fillMeView.setOnFillChangeListener(new OnFillChangeListener() {
             @Override
@@ -85,21 +85,21 @@ public class ExampleActivity extends AppCompatActivity {
         findViewById(R.id.colour_blue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillMeView.setFillColour(Color.BLUE);
+                fillMeView.setFillColour(0xff0099cc);
             }
         });
 
         findViewById(R.id.colour_red).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillMeView.setFillColour(Color.RED);
+                fillMeView.setFillColour(0xffff4444);
             }
         });
 
         findViewById(R.id.colour_green).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillMeView.setFillColour(Color.GREEN);
+                fillMeView.setFillColour(0xff99cc00);
             }
         });
 

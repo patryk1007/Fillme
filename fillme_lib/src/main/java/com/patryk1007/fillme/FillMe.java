@@ -32,46 +32,32 @@ public class FillMe extends View {
 
     private Bitmap image;
     private int alphaLevel = DEFAULT_ALPHA_LEVEL;
-    //private int fillPixelVertical;
-    // private int fillPixelHorizontal;
     private float fillPercentVertical;
     private float fillPercentHorizontal;
     private FillMode fillMode;
     private boolean convexFigure;
-    private boolean syncCalculation;
+    private boolean asyncCalculation;
     private int fillColour = Color.GREEN;
 
     private int width;
     private int height;
     private Paint paint = new Paint();
     private ArrayList<FillLine> fillLines = new ArrayList<>();
-    private LinesCalculation linesCalculation;
 
     public FillMe(Context context) {
         super(context);
-        linesCalculation = initCalculationManager();
         paint.setColor(fillColour);
     }
 
     public FillMe(Context context, AttributeSet attrs) {
         super(context, attrs);
         getAttr(attrs);
-        linesCalculation = initCalculationManager();
         paint.setColor(fillColour);
-    }
-
-    private LinesCalculation initCalculationManager() {
-        if (isConvexFigure()) {
-            return new ConvexLinesCalculation();
-        }
-        if (syncCalculation) {
-            return new FloodFillLinesCalculationSync();
-        }
-        return new FloodFillLinesCalculationAsync();
     }
 
     private void getAttr(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.FillMe);
+        asyncCalculation = typedArray.getBoolean(R.styleable.FillMe_fmAsyncCalculation, true);
         setImageDrawable(typedArray.getDrawable(R.styleable.FillMe_fmImage));
         setConvexFigure(typedArray.getBoolean(R.styleable.FillMe_fmConvexFigure, true));
         alphaLevel = (typedArray.getInt(R.styleable.FillMe_fmAlphaLevel, DEFAULT_ALPHA_LEVEL));
@@ -83,6 +69,80 @@ public class FillMe extends View {
         fillMode = (FillMode.fromId(typedArray.getInt(R.styleable.FillMe_fmFillByTouch, FillMode.NONE.getValue())));
         typedArray.recycle();
 
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        if (image != null) {
+            if (widthMode == MeasureSpec.EXACTLY) {
+                width = widthSize;
+            } else if (widthMode == MeasureSpec.AT_MOST) {
+                width = image.getWidth();
+            } else {
+                width = image.getWidth();
+            }
+
+            if (heightMode == MeasureSpec.EXACTLY) {
+                height = heightSize;
+            } else if (heightMode == MeasureSpec.AT_MOST) {
+                height = image.getHeight();
+            } else {
+                height = image.getHeight();
+            }
+
+            if (image.getWidth() != width || image.getHeight() != height) {
+                updateDrawable();
+            }
+        } else {
+            width = widthSize;
+            height = heightSize;
+        }
+
+        setMeasuredDimension(width, height);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+            int fillX = -1;
+            int fillVertical = -1;
+            if (fillMode == FillMode.BOTH || fillMode == FillMode.HORIZONTAL) {
+                fillX = (int) event.getX();
+            }
+            if (fillMode == FillMode.BOTH || fillMode == FillMode.VERTICAL) {
+                fillVertical = (int) event.getY();
+            }
+            fillPixelXY(fillX, fillVertical);
+            return true;
+        } else {
+            return super.onTouchEvent(event);
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (image != null) {
+            long timeStart = Calendar.getInstance().getTimeInMillis();
+            fillShape(canvas);
+            Log.d("SPEED_TEST2", "Line: " + (Calendar.getInstance().getTimeInMillis() - timeStart));
+            canvas.drawBitmap(image, 0, 0, null);
+        }
+    }
+
+
+    private LinesCalculation initCalculationManager() {
+        if (isConvexFigure()) {
+            return new ConvexLinesCalculation();
+        }
+        if (asyncCalculation) {
+            return new FloodFillLinesCalculationAsync();
+        }
+        return new FloodFillLinesCalculationSync();
     }
 
     public Bitmap getImage() {
@@ -110,6 +170,8 @@ public class FillMe extends View {
 
     public void setAlphaLevel(int alphaLevel) {
         this.alphaLevel = alphaLevel;
+        updateDrawable();
+        postInvalidate();
     }
 
     public boolean isConvexFigure() {
@@ -119,19 +181,17 @@ public class FillMe extends View {
     public void setConvexFigure(boolean convexFigure) {
         if (this.convexFigure != convexFigure && image != null) {
             this.convexFigure = convexFigure;
-            fillLines = new ArrayList<>();
-            linesCalculation = initCalculationManager();
-            linesCalculation.startCalculation(image, alphaLevel, onFillLineCalculationListener);
+            updateDrawable();
             this.postInvalidate();
         }
     }
 
-    public boolean isSyncCalculation() {
-        return syncCalculation;
+    public boolean isAsyncCalculation() {
+        return asyncCalculation;
     }
 
-    public void setSyncCalculation(boolean syncCalculation) {
-        this.syncCalculation = syncCalculation;
+    public void setSyncCalculation(boolean asyncCalculation) {
+        this.asyncCalculation = asyncCalculation;
     }
 
     public int getFillPixelVertical() {
@@ -171,14 +231,13 @@ public class FillMe extends View {
     public void setFillPercentVertical(float percentY) {
         percentY = percentY > 1.0f ? 1.0f : percentY;
         percentY = percentY < 0 ? 0 : percentY;
-        percentY = 1.0f - percentY;
         fillVertical((int) (height * percentY));
     }
 
     public void setFillPercentHorizontalAndVertical(float percentHorizontal, float percentVertical) {
         percentHorizontal = percentHorizontal > 1.0f ? 1.0f : percentHorizontal;
         percentVertical = percentVertical > 1.0f ? 1.0f : percentVertical;
-        if (percentVertical > 0) {
+        if (percentVertical >= 0) {
             percentVertical = 1.0f - percentVertical;
         }
 
@@ -186,7 +245,7 @@ public class FillMe extends View {
             fillPercentHorizontal = percentHorizontal;
             onFillChangeListener.onHorizontalValueChange(percentHorizontal, (int) (width * percentHorizontal));
         }
-        if (percentVertical >= 0) {
+        if (percentVertical > 0) {
             fillPercentVertical = percentVertical;
             onFillChangeListener.onVerticalValueChange(percentVertical, (int) (height * percentVertical));
         }
@@ -226,73 +285,11 @@ public class FillMe extends View {
         setFillPercentHorizontalAndVertical(horizontal / (float) width, 1 - (vertical / (float) height));
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        if (image != null) {
-            if (widthMode == MeasureSpec.EXACTLY) {
-                width = widthSize;
-            } else if (widthMode == MeasureSpec.AT_MOST) {
-                width = image.getWidth();
-            } else {
-                width = image.getWidth();
-            }
-
-            if (heightMode == MeasureSpec.EXACTLY) {
-                height = heightSize;
-            } else if (heightMode == MeasureSpec.AT_MOST) {
-                height = image.getHeight();
-            } else {
-                height = image.getHeight();
-            }
-
-            updateDrawable();
-        } else {
-            width = widthSize;
-            height = heightSize;
-        }
-
-        setMeasuredDimension(width, height);
-    }
-
     private void updateDrawable() {
-        if (image != null) {
-            if (image.getWidth() != width || image.getHeight() != height) {
-                image = Bitmap.createScaledBitmap(image, width, height, false);
-                linesCalculation.startCalculation(image, alphaLevel, onFillLineCalculationListener);
-            }
-        }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-            int fillX = -1;
-            int fillVertical = -1;
-            if (fillMode == FillMode.BTOH || fillMode == FillMode.HORIZONTAL) {
-                fillX = (int) event.getX();
-            }
-            if (fillMode == FillMode.BTOH || fillMode == FillMode.VERTICAL) {
-                fillVertical = (int) event.getY();
-            }
-            fillPixelXY(fillX, fillVertical);
-            return true;
-        } else {
-            return super.onTouchEvent(event);
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (image != null) {
-            long timeStart = Calendar.getInstance().getTimeInMillis();
-            fillShape(canvas);
-            Log.d("SPEED_TEST2", "Line: " + (Calendar.getInstance().getTimeInMillis() - timeStart));
-            canvas.drawBitmap(image, 0, 0, null);
+        if (image != null && width > 0 && height > 0) {
+            image = Bitmap.createScaledBitmap(image, width, height, false);
+            fillLines = new ArrayList<>();
+            initCalculationManager().startCalculation(image, alphaLevel, onFillLineCalculationListener);
         }
     }
 

@@ -11,7 +11,6 @@ import com.patryk1007.fillme.enums.FillMode;
 
 public class Example2Activity extends AppCompatActivity {
 
-    CheckBox convexFigureCheckbox;
     CheckBox fillVertical;
     CheckBox fillHorizontal;
     FillMe fillMeView;
@@ -26,18 +25,10 @@ public class Example2Activity extends AppCompatActivity {
     private void initView() {
         fillMeView = (FillMe) findViewById(R.id.fill_me_view);
         fillMeView.setConvexFigure(false);
-        fillMeView.setFillMode(FillMode.BTOH);
+        fillMeView.setFillMode(FillMode.BOTH);
         fillMeView.setFillPercentHorizontalAndVertical(1.0f, 1.0f);
         fillMeView.setImage(BitmapFactory.decodeResource(getResources(),
                 R.drawable.mess));
-
-        convexFigureCheckbox = (CheckBox) findViewById(R.id.convex_figure_checkbox);
-        convexFigureCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                fillMeView.setConvexFigure(isChecked);
-            }
-        });
 
         fillVertical = (CheckBox) findViewById(R.id.fill_vertical_checkbox);
         fillVertical.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -59,7 +50,7 @@ public class Example2Activity extends AppCompatActivity {
 
     private FillMode getMode() {
         if (fillVertical.isChecked() && fillHorizontal.isChecked()) {
-            return FillMode.BTOH;
+            return FillMode.BOTH;
         }
         if (fillVertical.isChecked()) {
             return FillMode.VERTICAL;
