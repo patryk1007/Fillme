@@ -242,7 +242,7 @@ public class FillMe extends View {
             fillPercentHorizontal = percentHorizontal;
             onFillChangeListener.onHorizontalValueChange(percentHorizontal, (int) (width * percentHorizontal));
         }
-        if (percentVertical > 0) {
+        if (percentVertical >= 0) {
             fillPercentVertical = 1.0f - percentVertical;
             onFillChangeListener.onVerticalValueChange(percentVertical, (int) (height * percentVertical));
         }
@@ -279,7 +279,9 @@ public class FillMe extends View {
     }
 
     private void fillPixelXY(int horizontal, int vertical) {
-        setFillPercentHorizontalAndVertical(horizontal / (float) width, 1 - (vertical / (float) height));
+        float horizontalPercent = horizontal >= 0 ? (horizontal / (float) width) : horizontal;
+        float verticalPercent = vertical >= 0 ? 1 - (vertical / (float) height) : vertical;
+        setFillPercentHorizontalAndVertical(horizontalPercent, verticalPercent);
     }
 
     private void updateDrawable() {
