@@ -243,7 +243,7 @@ public class FillMe extends View {
             onFillChangeListener.onHorizontalValueChange(percentHorizontal, (int) (width * percentHorizontal));
         }
         if (percentVertical > 0) {
-            fillPercentVertical = percentVertical;
+            fillPercentVertical = 1.0f - percentVertical;
             onFillChangeListener.onVerticalValueChange(percentVertical, (int) (height * percentVertical));
         }
 
