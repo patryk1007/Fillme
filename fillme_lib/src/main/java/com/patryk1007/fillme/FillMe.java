@@ -237,9 +237,6 @@ public class FillMe extends View {
     public void setFillPercentHorizontalAndVertical(float percentHorizontal, float percentVertical) {
         percentHorizontal = percentHorizontal > 1.0f ? 1.0f : percentHorizontal;
         percentVertical = percentVertical > 1.0f ? 1.0f : percentVertical;
-        if (percentVertical >= 0) {
-            percentVertical = 1.0f - percentVertical;
-        }
 
         if (percentHorizontal >= 0) {
             fillPercentHorizontal = percentHorizontal;
