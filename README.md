@@ -1,9 +1,13 @@
 # FillMe
-We are very pleased to present FillMe, the library to fill literaly every shape with color.
+We are very pleased to present FillMe, the library to fill literally every shape with color.
 
 Enjoy! :)
 
 ![FillMe Demo](demo/demo1.gif)      ![FillMe Demo2](demo/demo3.gif)
+
+### Try now
+
+[![Google Play](demo/demo1.gif)](https://play.google.com/store/apps/details?id=com.patryk1007.fillme)
 
 # Usage
 
