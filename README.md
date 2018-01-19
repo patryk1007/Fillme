@@ -7,7 +7,7 @@ Enjoy! :)
 
 ### Try now
 
-[![Google Play](demo/demo1.gif)](https://play.google.com/store/apps/details?id=com.patryk1007.fillme)
+[![Google Play](demo/google_play.png)](https://play.google.com/store/apps/details?id=com.patryk1007.fillme)
 
 # Usage
 
