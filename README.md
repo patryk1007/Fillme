@@ -28,6 +28,10 @@ Add FillMe the same way like other Adroid views.
             app:fmImage="@drawable/heart" />
 
 ```
+# Download
+
+    compile 'com.patryk1007:fillme_lib:1.0'
+
 
 # Attributes
 
