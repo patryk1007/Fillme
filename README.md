@@ -11,7 +11,7 @@ Enjoy! :)
 
 # Usage
 
-Add FillMe the same way like other Adroid views.
+Add the FillMe view the same way like other Android views.
 
 ```xml
         <com.patryk1007.fillme.FillMe
@@ -38,14 +38,14 @@ Add FillMe the same way like other Adroid views.
 
 | attr | description |Default
 |:---|:---|:---|
-| fmImage | Set drawable resource id, e.g. app:fmImage="@drawable/my_super_image" |-|
-| fmAlphaLevel | Library detects a shape's lines by checking alpha color, manage this value if your shape has shodows, value range: 0-255 | 122 |
-| fmFillHorizontalPercent |  Set the color horizontal fill in percents, value range: 0-1| 0 |
-| fmFillVerticalPercent | Set the color vertical fill in percents, value range: 0-1| 0 |
-| fmFillByTouch | Set changing fill percent by touch image, values: none; horizontal; vertical; both; | none |
-| fmConvexFigure | Set true if shape is convex| true   |
-| fmAsyncCalculation | if the image is big and calculation takes some time set the value to true to avoid problem with stop main thread ( Uses only if shape is concave)| true  |
-| fmFillColour |  Set fill color as int value| #00ff00  |
+| fmImage | set drawable resource id, e.g. app:fmImage="@drawable/my_super_image" |-|
+| fmAlphaLevel | the view detects a shape's lines by checking alpha color, manage this value if your shape has shadows,  range: 0-255 | 122 |
+| fmFillHorizontalPercent |  set the horizontal fill in percents,  range: 0-1| 0 |
+| fmFillVerticalPercent | set the vertical fill, in percents, range: 0-1| 0 |
+| fmFillByTouch | set changing fill percent by touch image, values: none; horizontal; vertical; both; | none |
+| fmConvexFigure | set true if shape is convex| true   |
+| fmAsyncCalculation | if the image is big - calculation takes time, set the value to true to avoid problems with stop the main thread ( used only if shape is concave)| true  |
+| fmFillColour |  set a fill color as int value| #00ff00  |
 
 # LICENSE
 
